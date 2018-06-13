@@ -11,11 +11,34 @@ def Board_maker(Dimx,Dimy):
 def print_board(board):
     for row in board:
         print (" ".join(row))
+        
+def Ship_placement(board,Dimx,Dimy):
+    board=Board_maker(Dimx,Dimy)
+    ships=["Carrier","Battleship","Cruiser","Submarine","Destroyer"]
+    shipspace=[5,4,3,3,2]
+    initials=["C","B","C","S","D"]
+    for ship,space,ini in zip(ships,shipspace,initials):
+        print(str(ship)+"s have "+str(space)+" spots where do you want to put it")
+        for i in range(space):
+            print("Place point " + str(i+1) + " of ship")
+            Pboat_row=input("Which row will your boat be in? ")
+            Pboat_col=input("Which collumn will your boat be in? ")
+            
+            while Pboat_row.isnumeric()==False or Pboat_col.isnumeric()==False or \
+            int(Pboat_row) >= Dimx or int(Pboat_col) >= Dimy or \
+            board[int(Pboat_row)][int(Pboat_col)] != "O": 
+                print("Made a mistake lets try that again")
+                Pboat_row=input("Which row will your boat be in? ")
+                Pboat_col=input("Which collumn will your boat be in? ") 
+                
+            board[int(Pboat_row)][int(Pboat_col)] = ini
+            print_board(board)
+    return(board)
 
 def B_Ship_game(Dimx,Dimy):
     #Checks how many players
     Players=input("How many people are playing?(1 or 2 only) ")
-    while Players.isnumeric()==False or int(Players) >= 3: 
+    while Players.isnumeric()==False or int(Players) >= 3 or int(Players) <= 0: 
         print("Type the numbers 1 or 2")
         Players=input("How many people are playing?(1 or 2 only)")    
     #Checks how many turns each player
@@ -23,11 +46,7 @@ def B_Ship_game(Dimx,Dimy):
     while Turn_number.isnumeric()==False or int(Turn_number) <= 17 or int(Turn_number)>Dimx*Dimy: 
         print("Made a mistake, Type a number that is greater than 17 or less than "+str(Dimx*Dimy))
         Turn_number=input("How many turns will each player get? ")
-        
-    ships=["Carrier","Battleship","Cruiser","Submarine","Destroyer"]
-    shipspace=[5,4,3,3,2]
-    initials=["C","B","C","S","D"]
-    
+
     #one player game
     if int(Players) == 1:
         board = Board_maker(Dimx,Dimy)
@@ -66,29 +85,13 @@ def B_Ship_game(Dimx,Dimy):
     #2 player game
     else:
         board1 = Board_maker(Dimx,Dimy)
-        Rboard1= Board_maker(Dimx,Dimy)
         board2 = Board_maker(Dimx,Dimy)
-        Rboard2= Board_maker(Dimx,Dimy)
         print("Player 1 place ships now:")
-        for ship,space,ini in zip(ships,shipspace,initials):
-            print(str(ship)+"s have "+str(space)+" spots where do you want to put it")
-            for i in range(space):
-                print("Place point " + str(i+1) + " of ship")
-                P1boat_row=int(input("Which row will your boat be in? "))
-                P1boat_col=int(input("Which collumn will your boat be in? "))
-                Rboard1[int(P1boat_row)][int(P1boat_col)] = ini
-                print_board(Rboard1)
+        Rboard1=Ship_placement("Rboard1",Dimx,Dimy)
         print ("\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n")
         print('Let player 2 choose their ships location now')
         print("Player 2 place ships now:")
-        for ship,space,ini in zip(ships,shipspace,initials):
-            print(str(ship)+"s have "+str(space)+" spots where do you want to put it")
-            for i in range(space):
-                print("Place point " + str(i+1) + " of ship")
-                P2boat_row=int(input("Which row will your boat be in? "))
-                P2boat_col=int(input("Which collumn will your boat be in? "))
-                Rboard2[int(P2boat_row)][int(P2boat_col)] = ini
-                print_board(Rboard2)
+        Rboard2=Ship_placement("Rboard2",Dimx,Dimy)
         print ("\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n" "\n")
         
         for turn in range(Turn_number*2):
